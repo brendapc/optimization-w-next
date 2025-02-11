@@ -6,11 +6,20 @@ import { formatDate } from '@/lib/format';
 import LikeButton from './like-icon';
 import { togglePostLikeStatus } from '@/actions/posts';
 
+function imageLoader(config) {
+  // we have to insert the resize values in the middle of the url, after /upload/ and before the image id
+  const urlStart = config.src.split('upload/')[0];
+  const urlEnd = config.src.split('upload/')[1];
+
+  const tranformations = `w_200,q_${config.quality}`;
+  return `${urlStart}upload/${tranformations}/${urlEnd}`;
+}
+
 function Post({ post, action }) {
   return (
     <article className="post">
       <div className="post-image">
-        <Image src={post.image} fill alt={post.title} />
+        <Image loader={imageLoader} quality={50} src={post.image} fill alt={post.title} />
       </div>
       <div className="post-content">
         <header>
